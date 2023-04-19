@@ -1244,6 +1244,9 @@ void UpdateObject::startCleanUp(bool isShutdown, QStringList feedsIdList, QList<
       int countAllNews = 0;
 
       qStr = QString("SELECT undeleteCount FROM feeds WHERE id=='%1'").arg(feedId);
+      if (neverUnreadCleanUp) qStr.append(" AND read!=0");
+      if (neverStarCleanUp) qStr.append(" AND starred==0");
+      if (neverLabelCleanUp) qStr.append(" AND (label=='' OR label==',' OR label IS NULL)");
       q.exec(qStr);
       if (q.next()) countAllNews = q.value(0).toInt();
 
